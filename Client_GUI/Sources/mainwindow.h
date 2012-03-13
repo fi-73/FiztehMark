@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QProgressDialog>
+#include "Tests/testHandler.h"
 
 namespace Ui {
 class MainWindow;
@@ -30,6 +31,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
     QProgressDialog *pProgressDialog;
+    TestHandler *testHandler;
 };
 
 #endif // MAINWINDOW_H

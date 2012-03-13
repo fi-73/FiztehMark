@@ -128,6 +128,12 @@ public:
      */
     bool nextTest();
 
+    /**
+     * @brief           Automatically adds all tests declared in TEST_SET
+     * @remark          TEST_SET itself is declared in TestHandler.cpp
+     */
+    void autoLoadTests();
+
 private:
 
     map<QString, unsigned (*)(unsigned int*,void(*)(int))> testMap; /**< map storing test names and pointers

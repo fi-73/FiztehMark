@@ -5,7 +5,6 @@
 #include "ui_mainwindow.h"
 #include <QMessageBox>
 #include <string.h>
-#include "Tests/testHandler.h"
 
 ////////////////////////////////////////////////////////////////////////
 /// Defines
@@ -50,15 +49,22 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    //initializing test progress dialog
     pProgressDialog = new QProgressDialog("Running tests...", "Stop", PROGRESSBAR_MIN, PROGRESSBAR_MAX, this);
     pProgressDialog->setWindowModality(Qt::WindowModal);
     pProgressDialog->setAutoClose(false);
+
+    //creating test set
+    testHandler = new TestHandler(setTestProgress);
+    testHandler->autoLoadTests();
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
     delete pProgressDialog;
+    delete testHandler;
 }
 
 void MainWindow::on_actionAbout_triggered()
@@ -111,73 +117,69 @@ void MainWindow::on_nextButton_clicked()
 
 void MainWindow::on_runBenchmark_clicked()
 {
-    //creating test handler, adding tests
-    TestHandler testHandler(setTestProgress);
-    testHandler.addTest("Memory copying test",getMemCpyTestScore);
-    //testHandler.addTest("Memory copying test 2",getMemCpyTestScore);
-
     int iter = 0;
     QString testProgressLabel = "Running ";
 
     //configuring progress dialog window
     pProgressDialogGlobal = pProgressDialog;
-    pProgressDialog->setLabelText(testProgressLabel + testHandler.getTestName());
+    pProgressDialog->setLabelText(testProgressLabel + testHandler->getTestName());
     pProgressDialog->show();
     pProgressDialog->repaint();
 
     //setting size of the scores table
     ui->testScores->clearContents();
-    ui->testScores->setRowCount(testHandler.getTestCount());
+    ui->testScores->setRowCount(testHandler->getTestCount());
 
     //running all available tests
-    while(testHandler.runTest())
+    while(testHandler->runTest())
     {
         pProgressDialog->setValue(PROGRESSBAR_MAX);
 
         //checking if test failed
-        if(testHandler.getErrorCode())
+        if(testHandler->getErrorCode())
         {
             QString mes;
-            mes = "Test '" + testHandler.getTestName() + "' ";
+            mes = "Test '" + testHandler->getTestName() + "' ";
             mes += "crashed with error code (";
-            mes += QString::number(testHandler.getErrorCode()) + ")";
+            mes += QString::number(testHandler->getErrorCode()) + ")";
             showErrorDialog(mes);
         }
 
         //writing results to scores table
         if(!ui->testScores->item(iter,0))
         {
-            ui->testScores->setItem(iter,0,new QTableWidgetItem(testHandler.getTestName()));
+            ui->testScores->setItem(iter,0,new QTableWidgetItem(testHandler->getTestName()));
         }
         else
         {
-            ui->testScores->item(iter,0)->setText(testHandler.getTestName());
+            ui->testScores->item(iter,0)->setText(testHandler->getTestName());
         }
         if(!ui->testScores->item(iter,1))
         {
-            ui->testScores->setItem(iter,1,new QTableWidgetItem(QString::number(testHandler.getTestScore())));
+            ui->testScores->setItem(iter,1,new QTableWidgetItem(QString::number(testHandler->getTestScore())));
         }
         else
         {
-            ui->testScores->item(iter,1)->setText(QString::number(testHandler.getTestScore()));
+            ui->testScores->item(iter,1)->setText(QString::number(testHandler->getTestScore()));
         }
+        ui->testScores->item(iter,1)->setTextAlignment(Qt::AlignHCenter);
 
         if(pProgressDialog->wasCanceled())
         {
             break;
         }
-        if(testHandler.nextTest())
+        if(testHandler->nextTest())
         {
             iter++;
         }
 
-        pProgressDialog->setLabelText(testProgressLabel + testHandler.getTestName());
+        pProgressDialog->setLabelText(testProgressLabel + testHandler->getTestName());
         pProgressDialog->setValue(PROGRESSBAR_MIN);
     }
 
     //forwarding to test score page and setting overall score
     pProgressDialog->close();
-    ui->lcdNumber->display((int)testHandler.getOverallScore());
+    ui->lcdNumber->display((int)testHandler->getOverallScore());
     ui->tabWidget->setCurrentIndex(2);
 }
 

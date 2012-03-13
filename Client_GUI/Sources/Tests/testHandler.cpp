@@ -20,8 +20,38 @@
 //      MA 02110-1301, USA.
 //
 
+//////////////////////////////////////////////////////////////////////////
+// Include libraries
+//////////////////////////////////////////////////////////////////////////
+
 #include "testHandler.h"
 #include <iostream>
+
+//////////////////////////////////////////////////////////////////////////
+// Creating test set
+//////////////////////////////////////////////////////////////////////////
+
+//
+// Test function should look like this: testFunction(score, returnPercentDone), where
+// score - pointer to variable that stores test score
+// returnPercentDone - callback-function with one int parameter in interval [0,100],
+//                     which dynamically sets the percent of test completion
+//
+struct Test
+{
+   QString name; /**< test name */
+   unsigned (*pTestFunction)(unsigned int*,void(*)(int)); /**< pointer to test function */
+};
+
+//
+// All tests should be declared here as follows:
+//
+Test TEST_SET[] =
+{
+    {"Memory copying test", getMemCpyTestScore}
+};
+
+//////////////////////////////////////////////////////////////////////////
 
 TestHandler::TestHandler(void (*pSetPercent)(int))
 {
@@ -97,6 +127,18 @@ void TestHandler::addTest(QString name,unsigned int (*pGetScore)(unsigned int*, 
 {
     testMap[name] = pGetScore;
     scoreMap[name] = 0;
+    testIter = testMap.begin();
+    scoreIter = scoreMap.begin();
+}
+
+void TestHandler::autoLoadTests()
+{
+    for(unsigned int i = 0; i < sizeof(TEST_SET)/sizeof(TEST_SET[0]); i++)
+    {
+        Test tmp = TEST_SET[i];
+        testMap[tmp.name] = (unsigned (*)(unsigned int*,void(*)(int)))tmp.pTestFunction;
+        scoreMap[tmp.name] = 0;
+    }
     testIter = testMap.begin();
     scoreIter = scoreMap.begin();
 }
