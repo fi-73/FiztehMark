@@ -39,6 +39,23 @@ unsigned int TestHandler::getTestScore()
         return 0;
 }
 
+unsigned int TestHandler::getOverallScore()
+{
+    if(!scoreMap.empty())
+    {
+        unsigned int overall = 0;
+        map<QString, unsigned int>::iterator it;
+
+        for(it = scoreMap.begin(); it != scoreMap.end(); it++)
+        {
+            overall += it->second;
+        }
+        return overall;
+    }
+    else
+        return 0;
+}
+
 QString TestHandler::getTestName()
 {
     if(testIter != testMap.end())

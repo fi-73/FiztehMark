@@ -49,12 +49,12 @@ UINT32 memCpyTest(UINT8 *srcBuf, UINT8 *dstBuf, UINT32 bufLen, UINT32 memBlockSi
 	}
 	
     long double time1, time2;
-    UINT32 i;
+    UINT32 i, j;
         
 	time1 = clock();
 	for(i = 0; i < iters; i++)
 	{
-		for(UINT32 j = 0; j < bufLen; j += memBlockSize)
+        for(j = 0; j < bufLen; j += memBlockSize)
 		{				
 			memcpy(dstBuf + j, srcBuf + j, memBlockSize);
         }
@@ -62,7 +62,7 @@ UINT32 memCpyTest(UINT8 *srcBuf, UINT8 *dstBuf, UINT32 bufLen, UINT32 memBlockSi
 	time2 = clock() - time1;   
 	
 	//time in microseconds
-    time1 = (time2 * 1000000.0) / CLOCKS_PER_SEC;
+    time1 = (time2 * 1000000.0) / (double)CLOCKS_PER_SEC;
 	if(!time1)
 	{
 		cerr << endl << "WARNING: " << "memTest: too fast procedure, try greater parameter values";
@@ -91,11 +91,11 @@ UINT32 getMemCpyTestScore(UINT32 *score, void (*pRetPercent)(int))
     if(!memSrcBuf || !memDstBuf)
     {
         cerr << endl << "ERROR: " << "memory allocation failed";
-        if(!memSrcBuf)
+        if(memSrcBuf)
         {
             delete [] memSrcBuf;
         }
-        if(!memDstBuf)
+        if(memDstBuf)
         {
             delete [] memDstBuf;
         }
@@ -205,11 +205,11 @@ UINT32 getMemCpyTestScore(UINT32 *score, void (*pRetPercent)(int))
     //cout << "Final score: " << *score << " points" << endl;
     
     ///memory deallocation
-    if(!memSrcBuf)
+    if(memSrcBuf)
     {
         delete [] memSrcBuf;
     }
-    if(!memDstBuf)
+    if(memDstBuf)
     {
         delete [] memDstBuf;
     }

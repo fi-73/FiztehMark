@@ -23,12 +23,45 @@
 #ifndef TESTHANDLER_H
 #define TESTHANDLER_H
 
+//////////////////////////////////////////////////////////////////////////
+// Include libraries
+//////////////////////////////////////////////////////////////////////////
+
 #include <QObject>
 #include <map>
 #include <QString>
 
 using namespace std;
 
+//////////////////////////////////////////////////////////////////////////
+// Include test sources
+//////////////////////////////////////////////////////////////////////////
+
+#include "Tests/MemCpyTest/memCpyTest.h"
+
+//////////////////////////////////////////////////////////////////////////
+
+/**
+ * @class   TestHandler
+ * @brief   Stores tests and their scores, runs available tests
+ *
+ *   Copyright 2012 Vitaliy Sergienko <visergienko@ukr.net>
+ *
+ *   This program is free software; you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as published by
+ *   the Free Software Foundation; either version 2 of the License, or
+ *   (at your option) any later version.
+ *
+ *   This program is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License
+ *   along with this program; if not, write to the Free Software
+ *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ *   MA 02110-1301, USA.
+ */
 class TestHandler
 {
 public:
@@ -48,6 +81,13 @@ public:
     unsigned int getTestScore();
 
     /**
+     * @brief           Getting overall test score
+     * @precondition    at least one test exists and was executed
+     * @return          overall test score
+     */
+    unsigned int getOverallScore();
+
+    /**
      * @brief           Getting error code
      * @precondition    test was executed
      * @return          current test error code
@@ -60,6 +100,12 @@ public:
      * @return          current test name
      */
     QString getTestName();
+
+    /**
+     * @brief           Getting number of tests available
+     * @return          number of tests
+     */
+    unsigned int getTestCount(){return testMap.size();}
 
     /**
      * @brief           Adding new test

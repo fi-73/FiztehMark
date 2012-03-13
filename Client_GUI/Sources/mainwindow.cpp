@@ -4,7 +4,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QMessageBox>
-#include <QProgressDialog>
 #include <string.h>
 #include "Tests/testHandler.h"
 
@@ -23,14 +22,25 @@
 ////////////////////////////////////////////////////////////////////////
 /// Constants & globals
 
-QProgressDialog *pProgressDialog;
+static QProgressDialog *pProgressDialogGlobal;
 
 ////////////////////////////////////////////////////////////////////////
 /// Auxiliary functions
 
+//sets the value of progress bar which belongs to pProgressDialogGlobal
 void setTestProgress(int val)
 {
-    pProgressDialog->setValue(val);
+    pProgressDialogGlobal->setValue(val);
+}
+
+//shows error dialog with given message
+void showErrorDialog(QString message)
+{
+    QMessageBox errorMessage;
+    errorMessage.setWindowTitle("Error");
+    errorMessage.setIcon(QMessageBox::Critical);
+    errorMessage.setText(message);
+    errorMessage.exec();
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -101,40 +111,73 @@ void MainWindow::on_nextButton_clicked()
 
 void MainWindow::on_runBenchmark_clicked()
 {
-    pProgressDialog->show();
+    //creating test handler, adding tests
     TestHandler testHandler(setTestProgress);
     testHandler.addTest("Memory copying test",getMemCpyTestScore);
+    //testHandler.addTest("Memory copying test 2",getMemCpyTestScore);
+
     int iter = 0;
-    pProgressDialog->setValue(PROGRESSBAR_MIN);
+    QString testProgressLabel = "Running ";
+
+    //configuring progress dialog window
+    pProgressDialogGlobal = pProgressDialog;
+    pProgressDialog->setLabelText(testProgressLabel + testHandler.getTestName());
+    pProgressDialog->show();
+    pProgressDialog->repaint();
+
+    //setting size of the scores table
+    ui->testScores->clearContents();
+    ui->testScores->setRowCount(testHandler.getTestCount());
+
+    //running all available tests
     while(testHandler.runTest())
     {
         pProgressDialog->setValue(PROGRESSBAR_MAX);
+
+        //checking if test failed
         if(testHandler.getErrorCode())
         {
-            QMessageBox errorMessage;
-            errorMessage.setWindowTitle("Error");
-            errorMessage.setIcon(QMessageBox::Critical);
             QString mes;
             mes = "Test '" + testHandler.getTestName() + "' ";
             mes += "crashed with error code (";
             mes += QString::number(testHandler.getErrorCode()) + ")";
-            errorMessage.setText(mes);
-            errorMessage.exec();
+            showErrorDialog(mes);
         }
-        ui->lcdNumber->display((int)testHandler.getTestScore());
-        ui->testScores->item(iter,0)->setText(testHandler.getTestName());
-        ui->testScores->item(iter,1)->setText(QString::number(testHandler.getTestScore()));
+
+        //writing results to scores table
+        if(!ui->testScores->item(iter,0))
+        {
+            ui->testScores->setItem(iter,0,new QTableWidgetItem(testHandler.getTestName()));
+        }
+        else
+        {
+            ui->testScores->item(iter,0)->setText(testHandler.getTestName());
+        }
+        if(!ui->testScores->item(iter,1))
+        {
+            ui->testScores->setItem(iter,1,new QTableWidgetItem(QString::number(testHandler.getTestScore())));
+        }
+        else
+        {
+            ui->testScores->item(iter,1)->setText(QString::number(testHandler.getTestScore()));
+        }
+
         if(pProgressDialog->wasCanceled())
         {
             break;
         }
         if(testHandler.nextTest())
         {
-            ui->testScores->setRowCount(ui->testScores->rowCount()+1);
+            iter++;
         }
+
+        pProgressDialog->setLabelText(testProgressLabel + testHandler.getTestName());
         pProgressDialog->setValue(PROGRESSBAR_MIN);
     }
+
+    //forwarding to test score page and setting overall score
     pProgressDialog->close();
+    ui->lcdNumber->display((int)testHandler.getOverallScore());
     ui->tabWidget->setCurrentIndex(2);
 }
 

@@ -2,7 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include "Tests/MemCpyTest/memCpyTest.h"
+#include <QProgressDialog>
 
 namespace Ui {
 class MainWindow;
@@ -29,6 +29,7 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    QProgressDialog *pProgressDialog;
 };
 
 #endif // MAINWINDOW_H

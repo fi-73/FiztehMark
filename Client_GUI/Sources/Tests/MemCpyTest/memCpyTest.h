@@ -56,9 +56,9 @@ using namespace std;
 #define MEDIUM_MEM_BLOCK_SIZE   (64 * KB_BYTE_NUMBER) /* size of medium memory block size */
 #define BIG_MEM_BLOCK_SIZE      (4 * MB_BYTE_NUMBER) /* size of big memory block size */
 
-#define SMALL_BLOCK_ITERS       (100) /* memcpy iterations count for small memory block size */
-#define MEDIUM_BLOCK_ITERS      (100) /* memcpy iterations count for medium memory block size */
-#define BIG_BLOCK_ITERS         (100) /* memcpy iterations count for big memory block size */
+#define SMALL_BLOCK_ITERS       (50) /* memcpy iterations count for small memory block size */
+#define MEDIUM_BLOCK_ITERS      (50) /* memcpy iterations count for medium memory block size */
+#define BIG_BLOCK_ITERS         (50) /* memcpy iterations count for big memory block size */
 
 //----------------------------------------------------------------------
 //Data types
