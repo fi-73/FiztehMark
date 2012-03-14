@@ -40,11 +40,13 @@ using namespace std;
 //----------------------------------------------------------------------
 //Error codes
 
-#define NO_ERROR	        	0
-#define ERROR_MEMORY_ALLOC		1
-#define ERROR_MEMORY_COPY		2
-#define ERROR_PARAM_INVALID		3
-#define ERROR_TEST_INVALID		4
+#define BASE_CODE               0
+
+#define NO_ERROR	        	(0 ^ BASE_CODE)
+#define ERROR_MEMORY_ALLOC		(1 ^ BASE_CODE)
+#define ERROR_MEMORY_COPY		(2 ^ BASE_CODE)
+#define ERROR_PARAM_INVALID		(3 ^ BASE_CODE)
+#define ERROR_TEST_INVALID		(4 ^ BASE_CODE)
 
 //----------------------------------------------------------------------
 //Constants

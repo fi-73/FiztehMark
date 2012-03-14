@@ -13,10 +13,13 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     Tests/MemCpyTest/memCpyTest.cpp \
-    Tests/testHandler.cpp
+    Tests/testHandler.cpp \
+    submitdialog.cpp
 
 HEADERS  += mainwindow.h \
     Tests/MemCpyTest/memCpyTest.h \
-    Tests/testHandler.h
+    Tests/testHandler.h \
+    submitdialog.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    submitdialog.ui

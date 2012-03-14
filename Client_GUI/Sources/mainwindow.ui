@@ -8,7 +8,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>300</height>
+    <height>306</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -26,8 +26,14 @@
   <property name="maximumSize">
    <size>
     <width>400</width>
-    <height>300</height>
+    <height>306</height>
    </size>
+  </property>
+  <property name="font">
+   <font>
+    <family>Century Schoolbook</family>
+    <pointsize>10</pointsize>
+   </font>
   </property>
   <property name="windowTitle">
    <string>FiztehMark</string>
@@ -41,6 +47,12 @@
       <width>401</width>
       <height>250</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Tahoma</family>
+      <pointsize>10</pointsize>
+     </font>
     </property>
     <property name="currentIndex">
      <number>0</number>
@@ -185,10 +197,10 @@
      <widget class="QLCDNumber" name="lcdNumber">
       <property name="geometry">
        <rect>
-        <x>50</x>
+        <x>100</x>
         <y>40</y>
-        <width>293</width>
-        <height>41</height>
+        <width>290</width>
+        <height>40</height>
        </rect>
       </property>
       <property name="frameShape">
@@ -216,9 +228,9 @@
      <widget class="QLabel" name="label_2">
       <property name="geometry">
        <rect>
-        <x>50</x>
+        <x>100</x>
         <y>10</y>
-        <width>291</width>
+        <width>290</width>
         <height>21</height>
        </rect>
       </property>
@@ -232,7 +244,7 @@
      <widget class="QLabel" name="label_3">
       <property name="geometry">
        <rect>
-        <x>50</x>
+        <x>100</x>
         <y>90</y>
         <width>291</width>
         <height>21</height>
@@ -248,10 +260,10 @@
      <widget class="QTableWidget" name="testScores">
       <property name="geometry">
        <rect>
-        <x>50</x>
+        <x>9</x>
         <y>120</y>
-        <width>291</width>
-        <height>81</height>
+        <width>381</width>
+        <height>90</height>
        </rect>
       </property>
       <property name="selectionBehavior">
@@ -264,7 +276,7 @@
        <enum>Qt::SolidLine</enum>
       </property>
       <attribute name="horizontalHeaderDefaultSectionSize">
-       <number>140</number>
+       <number>185</number>
       </attribute>
       <attribute name="horizontalHeaderHighlightSections">
        <bool>true</bool>
@@ -301,15 +313,41 @@
        </property>
       </column>
      </widget>
+     <widget class="QPushButton" name="saveButton">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>15</y>
+        <width>80</width>
+        <height>40</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Save</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="submitButton">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>65</y>
+        <width>80</width>
+        <height>40</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Submit</string>
+      </property>
+     </widget>
     </widget>
    </widget>
    <widget class="QPushButton" name="nextButton">
     <property name="geometry">
      <rect>
-      <x>330</x>
+      <x>319</x>
       <y>251</y>
-      <width>70</width>
-      <height>25</height>
+      <width>81</width>
+      <height>31</height>
      </rect>
     </property>
     <property name="cursor">
@@ -335,7 +373,7 @@
      <x>0</x>
      <y>0</y>
      <width>400</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuMenu">

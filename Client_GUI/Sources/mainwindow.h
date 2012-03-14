@@ -1,9 +1,26 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+//////////////////////////////////////////////////////////////////////////
+// Include libraries
+//////////////////////////////////////////////////////////////////////////
+
 #include <QMainWindow>
 #include <QProgressDialog>
 #include "Tests/testHandler.h"
+#include "submitdialog.h"
+
+//////////////////////////////////////////////////////////////////////////
+// Defines
+//////////////////////////////////////////////////////////////////////////
+
+#define BENCHMARK_STATE_PASSED      0
+#define BENCHMARK_STATE_NOT_RUN     1
+#define BENCHMARK_STATE_FAILED      2
+
+//////////////////////////////////////////////////////////////////////////
+// Main GUI class
+//////////////////////////////////////////////////////////////////////////
 
 namespace Ui {
 class MainWindow;
@@ -28,10 +45,14 @@ private slots:
 
     void on_tabWidget_currentChanged(int index);
 
+    void on_submitButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     QProgressDialog *pProgressDialog;
     TestHandler *testHandler;
+    SubmitDialog *submitDialog;
+    int benchmarkState;
 };
 
 #endif // MAINWINDOW_H

@@ -58,6 +58,13 @@ MainWindow::MainWindow(QWidget *parent) :
     //creating test set
     testHandler = new TestHandler(setTestProgress);
     testHandler->autoLoadTests();
+
+    //creating test score submit dialog
+    submitDialog = new SubmitDialog(this);
+    submitDialog->setWindowModality(Qt::WindowModal);
+
+    //initializing benchmark state
+    benchmarkState = BENCHMARK_STATE_NOT_RUN;
 }
 
 MainWindow::~MainWindow()
@@ -133,8 +140,14 @@ void MainWindow::on_runBenchmark_clicked()
     ui->testScores->setRowCount(testHandler->getTestCount());
 
     //running all available tests
-    while(testHandler->runTest())
+    while(!pProgressDialog->wasCanceled())
     {
+        if(!testHandler->runTest())
+        {
+            showErrorDialog("No test is available");
+            break;
+        }
+
         pProgressDialog->setValue(PROGRESSBAR_MAX);
 
         //checking if test failed
@@ -145,6 +158,7 @@ void MainWindow::on_runBenchmark_clicked()
             mes += "crashed with error code (";
             mes += QString::number(testHandler->getErrorCode()) + ")";
             showErrorDialog(mes);
+            benchmarkState = BENCHMARK_STATE_FAILED;
         }
 
         //writing results to scores table
@@ -164,24 +178,36 @@ void MainWindow::on_runBenchmark_clicked()
         {
             ui->testScores->item(iter,1)->setText(QString::number(testHandler->getTestScore()));
         }
-        ui->testScores->item(iter,1)->setTextAlignment(Qt::AlignHCenter);
+        ui->testScores->item(iter,1)->setTextAlignment(Qt::AlignVCenter | Qt::AlignHCenter);
 
         if(pProgressDialog->wasCanceled())
         {
-            break;
-        }
-        if(testHandler->nextTest())
-        {
-            iter++;
+            benchmarkState = BENCHMARK_STATE_FAILED;
+            //forwarding to test score page and setting overall score
+            pProgressDialog->close();
+            ui->lcdNumber->display((int)testHandler->getOverallScore());
+            ui->tabWidget->setCurrentIndex(2);
+            return;
         }
 
         pProgressDialog->setLabelText(testProgressLabel + testHandler->getTestName());
         pProgressDialog->setValue(PROGRESSBAR_MIN);
+
+        //to next test
+        if(testHandler->nextTest())
+        {
+            iter++;
+        }
+        else
+        {
+            break;
+        }
     }
 
     //forwarding to test score page and setting overall score
     pProgressDialog->close();
     ui->lcdNumber->display((int)testHandler->getOverallScore());
+    benchmarkState = BENCHMARK_STATE_PASSED;
     ui->tabWidget->setCurrentIndex(2);
 }
 
@@ -202,6 +228,16 @@ void MainWindow::on_tabWidget_currentChanged(int index)
         case TAB_INDEX_RESULTS:
         {
             ui->nextButton->setText(NEXT_BUTTON_TEXT2);
+            if(benchmarkState != BENCHMARK_STATE_PASSED)
+            {
+                ui->submitButton->setEnabled(false);
+                ui->saveButton->setEnabled(false);
+            }
+            else
+            {
+                ui->submitButton->setEnabled(true);
+                ui->saveButton->setEnabled(true);
+            }
             break;
         }
         default:
@@ -210,4 +246,9 @@ void MainWindow::on_tabWidget_currentChanged(int index)
             break;
         }
     }
+}
+
+void MainWindow::on_submitButton_clicked()
+{
+    submitDialog->show();
 }
