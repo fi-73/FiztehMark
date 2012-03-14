@@ -134,6 +134,12 @@ public:
      */
     void autoLoadTests();
 
+    /**
+     * @brief           Resets pointer to current test
+     *                  (sets it equal to testMap.begin()) and clears errorCode
+     */
+    void reset();
+
 private:
 
     map<QString, unsigned (*)(unsigned int*,void(*)(int))> testMap; /**< map storing test names and pointers

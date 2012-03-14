@@ -142,3 +142,10 @@ void TestHandler::autoLoadTests()
     testIter = testMap.begin();
     scoreIter = scoreMap.begin();
 }
+
+void TestHandler::reset()
+{
+    testIter = testMap.begin();
+    scoreIter = scoreMap.begin();
+    errorCode = 0;
+}

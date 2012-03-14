@@ -117,6 +117,8 @@ void MainWindow::on_nextButton_clicked()
 
 void MainWindow::on_runBenchmark_clicked()
 {
+    testHandler->reset();
+
     int iter = 0;
     QString testProgressLabel = "Running ";
 
