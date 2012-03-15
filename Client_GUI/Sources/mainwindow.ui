@@ -31,7 +31,7 @@
   </property>
   <property name="font">
    <font>
-    <family>Century Schoolbook</family>
+    <family>Tahoma</family>
     <pointsize>10</pointsize>
    </font>
   </property>
@@ -163,7 +163,7 @@
         <x>10</x>
         <y>10</y>
         <width>371</width>
-        <height>51</height>
+        <height>111</height>
        </rect>
       </property>
       <property name="text">
@@ -349,6 +349,11 @@
       <width>81</width>
       <height>31</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Tahoma</family>
+     </font>
     </property>
     <property name="cursor">
      <cursorShape>PointingHandCursor</cursorShape>
