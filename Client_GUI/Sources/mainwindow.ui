@@ -20,7 +20,7 @@
   <property name="minimumSize">
    <size>
     <width>400</width>
-    <height>300</height>
+    <height>306</height>
    </size>
   </property>
   <property name="maximumSize">
@@ -50,7 +50,6 @@
     </property>
     <property name="font">
      <font>
-      <family>Tahoma</family>
       <pointsize>10</pointsize>
      </font>
     </property>
@@ -163,7 +162,7 @@
         <x>10</x>
         <y>10</y>
         <width>371</width>
-        <height>111</height>
+        <height>141</height>
        </rect>
       </property>
       <property name="text">
@@ -353,6 +352,7 @@
     <property name="font">
      <font>
       <family>Tahoma</family>
+      <pointsize>9</pointsize>
      </font>
     </property>
     <property name="cursor">

@@ -209,6 +209,8 @@ void MainWindow::on_runBenchmark_clicked()
     ui->lcdNumber->display((int)testHandler->getOverallScore());
     benchmarkState = BENCHMARK_STATE_PASSED;
     ui->tabWidget->setCurrentIndex(2);
+
+    pProgressDialog->reset();
 }
 
 void MainWindow::on_tabWidget_currentChanged(int index)
