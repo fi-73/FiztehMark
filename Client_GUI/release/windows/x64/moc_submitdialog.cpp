@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'submitdialog.h'
 **
-** Created: Wed 14. Mar 14:56:56 2012
+** Created: Mon 26. Mar 08:53:25 2012
 **      by: The Qt Meta Object Compiler version 63 (Qt 4.8.0)
 **
 ** WARNING! All changes made in this file will be lost!
