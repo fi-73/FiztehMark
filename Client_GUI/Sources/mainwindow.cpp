@@ -65,6 +65,13 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //initializing benchmark state
     benchmarkState = BENCHMARK_STATE_NOT_RUN;
+
+    //creating benchmark score saving-to-file dialog
+    saveFileDialog = new QFileDialog(this,"Save results");
+    saveFileDialog->setFileMode(QFileDialog::AnyFile);
+    saveFileDialog->setNameFilter(tr("*.xml"));
+    saveFileDialog->setAcceptMode(QFileDialog::AcceptSave);
+    saveFileDialog->setViewMode(QFileDialog::List);
 }
 
 MainWindow::~MainWindow()
@@ -72,6 +79,7 @@ MainWindow::~MainWindow()
     delete ui;
     delete pProgressDialog;
     delete testHandler;
+    delete saveFileDialog;
 }
 
 void MainWindow::on_actionAbout_triggered()
@@ -253,4 +261,9 @@ void MainWindow::on_tabWidget_currentChanged(int index)
 void MainWindow::on_submitButton_clicked()
 {
     submitDialog->show();
+}
+
+void MainWindow::on_saveButton_clicked()
+{
+    saveFileDialog->exec();
 }

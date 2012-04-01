@@ -54,13 +54,13 @@ using namespace std;
 #define KB_BYTE_NUMBER          (1024) /* size of kilobyte in bytes */
 #define MB_BYTE_NUMBER          (1024 * KB_BYTE_NUMBER) /* size of megabyte in bytes */
 #define MEMORY_AMOUNT           (128 * MB_BYTE_NUMBER) /* amount of memory to be allocated, in bytes */
-#define SMALL_MEM_BLOCK_SIZE    (1 * KB_BYTE_NUMBER) /* size of small memory block size */
-#define MEDIUM_MEM_BLOCK_SIZE   (2 * MB_BYTE_NUMBER) /* size of medium memory block size */
-#define BIG_MEM_BLOCK_SIZE      (16 * MB_BYTE_NUMBER) /* size of big memory block size */
+#define SMALL_MEM_BLOCK_SIZE    (4 * KB_BYTE_NUMBER) /* size of small memory block size */
+#define MEDIUM_MEM_BLOCK_SIZE   (128 * KB_BYTE_NUMBER) /* size of medium memory block size */
+#define BIG_MEM_BLOCK_SIZE      (8 * MB_BYTE_NUMBER) /* size of big memory block size */
 
-#define SMALL_BLOCK_ITERS       (10) /* memcpy iterations count for small memory block size */
-#define MEDIUM_BLOCK_ITERS      (10) /* memcpy iterations count for medium memory block size */
-#define BIG_BLOCK_ITERS         (10) /* memcpy iterations count for big memory block size */
+#define SMALL_BLOCK_ITERS       (20) /* memcpy iterations count for small memory block size */
+#define MEDIUM_BLOCK_ITERS      (20) /* memcpy iterations count for medium memory block size */
+#define BIG_BLOCK_ITERS         (20) /* memcpy iterations count for big memory block size */
 
 //----------------------------------------------------------------------
 //Data types

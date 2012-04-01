@@ -7,6 +7,7 @@
 
 #include <QMainWindow>
 #include <QProgressDialog>
+#include <QFileDialog>
 #include "Tests/testHandler.h"
 #include "submitdialog.h"
 
@@ -47,11 +48,14 @@ private slots:
 
     void on_submitButton_clicked();
 
+    void on_saveButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     QProgressDialog *pProgressDialog;
     TestHandler *testHandler;
     SubmitDialog *submitDialog;
+    QFileDialog *saveFileDialog;
     int benchmarkState;
 };
 
