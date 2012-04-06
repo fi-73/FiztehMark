@@ -69,7 +69,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //creating benchmark score saving-to-file dialog
     saveFileDialog = new QFileDialog(this,"Save results");
     saveFileDialog->setFileMode(QFileDialog::AnyFile);
-    saveFileDialog->setNameFilter(tr("*.xml"));
+    saveFileDialog->setNameFilter(tr("*" FILE_EXT));
     saveFileDialog->setAcceptMode(QFileDialog::AcceptSave);
     saveFileDialog->setViewMode(QFileDialog::List);
 }
@@ -80,6 +80,11 @@ MainWindow::~MainWindow()
     delete pProgressDialog;
     delete testHandler;
     delete saveFileDialog;
+}
+
+int MainWindow::getBenchmarkResultsBuf(char **buf, int bufLen)
+{
+    return 0;
 }
 
 void MainWindow::on_actionAbout_triggered()
@@ -265,5 +270,9 @@ void MainWindow::on_submitButton_clicked()
 
 void MainWindow::on_saveButton_clicked()
 {
-    saveFileDialog->exec();
+    QString fileName = DEFAULT_FILE_NAME;
+    if(saveFileDialog->exec())
+        fileName = saveFileDialog->selectedFiles().first();
+    fileName += FILE_EXT;
+    //showErrorDialog(fileName);
 }

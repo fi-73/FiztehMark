@@ -19,7 +19,8 @@ SOURCES += main.cpp\
 HEADERS  += mainwindow.h \
     Tests/MemCpyTest/memCpyTest.h \
     Tests/testHandler.h \
-    submitdialog.h
+    submitdialog.h \
+    saveResults.h
 
 FORMS    += mainwindow.ui \
     submitdialog.ui

@@ -31,6 +31,37 @@ using namespace std;
 ///Functions
 
 /**
+ *@brief		Defines number of test iterations
+ *
+ * @param[out]	iters               test iterations
+ * @return 		NO_ERROR or relevant error code
+ */
+UINT32 defItersCount(UINT8 *srcBuf, UINT8 *dstBuf, UINT32 bufLen, UINT32 *iters)
+{
+    if(!srcBuf || !dstBuf || !bufLen || !iters)
+    {
+        return ERROR_PARAM_INVALID;
+    }
+
+    long double time1, time2, num;
+    UINT32 j;
+
+    time1 = clock();
+    for(j = 0; j < bufLen; j += SMALL_MEM_BLOCK_SIZE)
+    {
+        memcpy(dstBuf + j, srcBuf + j, SMALL_MEM_BLOCK_SIZE);
+    }
+    time2 = clock() - time1;
+
+    num = CLOCKS_PER_SEC / time2;
+    *iters = (UINT32)num;
+    if(!(*iters))
+        (*iters)++;
+
+    return NO_ERROR;
+}
+
+/**
  *@brief		Memory blocks copying test
  * 
  * @param[in]	srcBuf			memory buffer to copy from
@@ -51,15 +82,15 @@ UINT32 memCpyTest(UINT8 *srcBuf, UINT8 *dstBuf, UINT32 bufLen, UINT32 memBlockSi
     long double time1, time2;
     UINT32 i, j;
         
-	time1 = clock();
+    time1 = clock();
 	for(i = 0; i < iters; i++)
-	{
+    {
         for(j = 0; j < bufLen; j += memBlockSize)
 		{				
 			memcpy(dstBuf + j, srcBuf + j, memBlockSize);
         }
 	}
-	time2 = clock() - time1;   
+    time2 = clock() - time1;
 	
 	//time in microseconds
     time1 = (time2 * 1000000.0) / (double)CLOCKS_PER_SEC;
@@ -84,6 +115,10 @@ UINT32 memCpyTest(UINT8 *srcBuf, UINT8 *dstBuf, UINT32 bufLen, UINT32 memBlockSi
  */
 UINT32 getMemCpyTestScore(UINT32 *score, void (*pRetPercent)(int))
 {
+    ///percents complete
+    int percent = 0;
+    pRetPercent(percent);
+
 	///memory allocation
     UINT8 *memSrcBuf = NULL, *memDstBuf = NULL;
     memSrcBuf = new UINT8[MEMORY_AMOUNT];
@@ -105,13 +140,18 @@ UINT32 getMemCpyTestScore(UINT32 *score, void (*pRetPercent)(int))
     ///initializing buffer values
     memset(memSrcBuf, 0xF1, MEMORY_AMOUNT);
     memset(memDstBuf, 0x00, MEMORY_AMOUNT);
+
+    //number of test iterations
+    UINT32 sBlockIters = SMALL_BLOCK_ITERS, mBlockIters = MEDIUM_BLOCK_ITERS, bBlockIters = BIG_BLOCK_ITERS;
+    defItersCount(memSrcBuf, memDstBuf, MEMORY_AMOUNT, &sBlockIters);
+    mBlockIters = sBlockIters * ITERS_COUNT_COEF;
+    bBlockIters = mBlockIters * ITERS_COUNT_COEF;
+    memset(memDstBuf, 0x00, MEMORY_AMOUNT);
+    percent++;
+    pRetPercent(percent);
     
     ///memory copying speed test
     double score1, score2, score3;
-
-    ///percents complete
-    int percent = 0;
-    pRetPercent(percent);
     
     //test return value
     UINT32 ret = NO_ERROR;
@@ -119,7 +159,7 @@ UINT32 getMemCpyTestScore(UINT32 *score, void (*pRetPercent)(int))
     {          
         ///small blocks
         {
-            ret = memCpyTest(memSrcBuf, memDstBuf, MEMORY_AMOUNT, SMALL_MEM_BLOCK_SIZE, SMALL_BLOCK_ITERS, &score1);
+            ret = memCpyTest(memSrcBuf, memDstBuf, MEMORY_AMOUNT, SMALL_MEM_BLOCK_SIZE, sBlockIters, &score1);
 			if(ret != NO_ERROR)
 			{
 				delete [] memSrcBuf;
@@ -146,7 +186,7 @@ UINT32 getMemCpyTestScore(UINT32 *score, void (*pRetPercent)(int))
         
         ///medium blocks
         {
-            ret = memCpyTest(memSrcBuf, memDstBuf, MEMORY_AMOUNT, MEDIUM_MEM_BLOCK_SIZE, MEDIUM_BLOCK_ITERS, &score2);
+            ret = memCpyTest(memSrcBuf, memDstBuf, MEMORY_AMOUNT, MEDIUM_MEM_BLOCK_SIZE, mBlockIters, &score2);
 			if(ret != NO_ERROR)
 			{
 				delete [] memSrcBuf;
@@ -173,7 +213,7 @@ UINT32 getMemCpyTestScore(UINT32 *score, void (*pRetPercent)(int))
         
         ///big blocks
         {
-            ret = memCpyTest(memSrcBuf, memDstBuf, MEMORY_AMOUNT, BIG_MEM_BLOCK_SIZE, BIG_BLOCK_ITERS, &score3);
+            ret = memCpyTest(memSrcBuf, memDstBuf, MEMORY_AMOUNT, BIG_MEM_BLOCK_SIZE, bBlockIters, &score3);
 			if(ret != NO_ERROR)
 			{
 				delete [] memSrcBuf;

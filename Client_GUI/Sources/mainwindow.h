@@ -10,6 +10,7 @@
 #include <QFileDialog>
 #include "Tests/testHandler.h"
 #include "submitdialog.h"
+#include "saveResults.h"
 
 //////////////////////////////////////////////////////////////////////////
 // Defines
@@ -51,12 +52,14 @@ private slots:
     void on_saveButton_clicked();
 
 private:
-    Ui::MainWindow *ui;
-    QProgressDialog *pProgressDialog;
-    TestHandler *testHandler;
-    SubmitDialog *submitDialog;
-    QFileDialog *saveFileDialog;
-    int benchmarkState;
+    Ui::MainWindow *ui; /* UI */
+    QProgressDialog *pProgressDialog; /* progress dialog window */
+    TestHandler *testHandler; /* test handler */
+    SubmitDialog *submitDialog; /* submit dialog */
+    QFileDialog *saveFileDialog; /* benchmark results saving dialog */
+    int benchmarkState; /* benchmark state (test passed, test were not run etc.) */
+
+    int getBenchmarkResultsBuf(char** buf, int bufLen); /* returns buffer with h/w configuration and benchmark results */
 };
 
 #endif // MAINWINDOW_H

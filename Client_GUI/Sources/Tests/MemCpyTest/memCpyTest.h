@@ -58,9 +58,10 @@ using namespace std;
 #define MEDIUM_MEM_BLOCK_SIZE   (128 * KB_BYTE_NUMBER) /* size of medium memory block size */
 #define BIG_MEM_BLOCK_SIZE      (8 * MB_BYTE_NUMBER) /* size of big memory block size */
 
+#define ITERS_COUNT_COEF        (1.5)  /* coefficient to define number of test iterations */
 #define SMALL_BLOCK_ITERS       (20) /* memcpy iterations count for small memory block size */
-#define MEDIUM_BLOCK_ITERS      (20) /* memcpy iterations count for medium memory block size */
-#define BIG_BLOCK_ITERS         (20) /* memcpy iterations count for big memory block size */
+#define MEDIUM_BLOCK_ITERS      (SMALL_BLOCK_ITERS * ITERS_COUNT_COEF) /* memcpy iterations count for medium memory block size */
+#define BIG_BLOCK_ITERS         (MEDIUM_BLOCK_ITERS * ITERS_COUNT_COEF) /* memcpy iterations count for big memory block size */
 
 //----------------------------------------------------------------------
 //Data types
@@ -71,6 +72,16 @@ typedef unsigned int            UINT32;
 
 ////////////////////////////////////////////////////////////////////////
 ///Functions
+
+/**
+ *@brief		Defines number of test iterations
+ *
+ * @param[in]	srcBuf              memory buffer to copy from
+ * @param[in]	dstBuf              memory buffer to copy to
+ * @param[out]	iters               test iterations
+ * @return 		NO_ERROR or relevant error code
+ */
+UINT32 defItersCount(UINT8 *srcBuf, UINT8 *dstBuf, UINT32 bufLen, UINT32 *iters);
 
 /**
  *@brief		Memory blocks copying test
