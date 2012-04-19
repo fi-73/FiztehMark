@@ -3,7 +3,6 @@
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include <QMessageBox>
 #include <string.h>
 
 ////////////////////////////////////////////////////////////////////////
@@ -30,16 +29,6 @@ static QProgressDialog *pProgressDialogGlobal;
 void setTestProgress(int val)
 {
     pProgressDialogGlobal->setValue(val);
-}
-
-//shows error dialog with given message
-void showErrorDialog(QString message)
-{
-    QMessageBox errorMessage;
-    errorMessage.setWindowTitle("Error");
-    errorMessage.setIcon(QMessageBox::Critical);
-    errorMessage.setText(message);
-    errorMessage.exec();
 }
 
 ////////////////////////////////////////////////////////////////////////

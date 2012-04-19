@@ -22,6 +22,11 @@ void SubmitDialog::on_cancelSubmitButton_clicked()
 
 void SubmitDialog::on_confirmSubmitButton_clicked()
 {
+    if(ui->loginEdit->text() == "" || ui->passEdit->text() == "")
+    {
+        showErrorDialog("You need to fill login and password data");
+        return;
+    }
     QString mes = "Information about your hardware and";
     mes += "\nbenchmark results will be uploaded to server.";
     mes += "\n\nContinue to send?";

@@ -2,6 +2,7 @@
 #define SUBMITDIALOG_H
 
 #include <QDialog>
+#include "errors.h"
 
 namespace Ui {
 class SubmitDialog;

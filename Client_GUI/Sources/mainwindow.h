@@ -12,6 +12,7 @@
 #include "submitdialog.h"
 #include "saveResults.h"
 #include <fstream>
+#include "errors.h"
 
 //////////////////////////////////////////////////////////////////////////
 // Defines

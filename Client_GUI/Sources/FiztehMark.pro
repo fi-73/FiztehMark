@@ -14,13 +14,15 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     Tests/MemCpyTest/memCpyTest.cpp \
     Tests/testHandler.cpp \
-    submitdialog.cpp
+    submitdialog.cpp \
+    errors.cpp
 
 HEADERS  += mainwindow.h \
     Tests/MemCpyTest/memCpyTest.h \
     Tests/testHandler.h \
     submitdialog.h \
-    saveResults.h
+    saveResults.h \
+    errors.h
 
 FORMS    += mainwindow.ui \
     submitdialog.ui
