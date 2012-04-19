@@ -11,6 +11,7 @@
 #include "Tests/testHandler.h"
 #include "submitdialog.h"
 #include "saveResults.h"
+#include <fstream>
 
 //////////////////////////////////////////////////////////////////////////
 // Defines
@@ -59,7 +60,7 @@ private:
     QFileDialog *saveFileDialog; /* benchmark results saving dialog */
     int benchmarkState; /* benchmark state (test passed, test were not run etc.) */
 
-    int getBenchmarkResultsBuf(char** buf, int bufLen); /* returns buffer with h/w configuration and benchmark results */
+    int getTextInfoBuf(char **buf, int *bufLen); /* returns buffer with h/w configuration and benchmark results */
 };
 
 #endif // MAINWINDOW_H

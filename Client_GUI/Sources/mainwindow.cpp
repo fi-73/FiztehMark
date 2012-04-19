@@ -82,11 +82,6 @@ MainWindow::~MainWindow()
     delete saveFileDialog;
 }
 
-int MainWindow::getBenchmarkResultsBuf(char **buf, int bufLen)
-{
-    return 0;
-}
-
 void MainWindow::on_actionAbout_triggered()
 {
     QMessageBox msgBox;
@@ -270,9 +265,51 @@ void MainWindow::on_submitButton_clicked()
 
 void MainWindow::on_saveButton_clicked()
 {
+    char *textInfo = NULL;
+    int textInfoLen = 0;
     QString fileName = DEFAULT_FILE_NAME;
-    if(saveFileDialog->exec())
-        fileName = saveFileDialog->selectedFiles().first();
-    fileName += FILE_EXT;
+
+    if(!saveFileDialog->exec())
+        return;
+
+    fileName = saveFileDialog->selectedFiles().first();
+    if(fileName.indexOf('.',0) == -1)fileName += FILE_EXT;
+    if(!getTextInfoBuf(&textInfo,&textInfoLen))
+    {
+        ofstream ofs(fileName.toStdString().c_str());
+        ofs << textInfo << endl;
+        ofs.close();
+    }
+    else
+    {
+        showErrorDialog("Saving info to file failed");
+    }
     //showErrorDialog(fileName);
+}
+
+int MainWindow::getTextInfoBuf(char **buf, int *bufLen)
+{
+    int ret = 0;
+
+    QString allInfo = "System information: \n";
+    QString osInfo = QString::fromStdString("OS version") + QString::fromStdString(": ") + ui->tableWidget->item(0,0)->text();
+    allInfo += "\t" + osInfo + "\n";
+    QString cpuInfo = QString::fromStdString("CPU") + QString::fromStdString(": ") + ui->tableWidget->item(1,0)->text();
+    allInfo += "\t" + cpuInfo + "\n";
+    QString memInfo = QString::fromStdString("Memory") + QString::fromStdString(": ") + ui->tableWidget->item(2,0)->text();
+    allInfo += "\t" + memInfo + "\n";
+    QString mbInfo = QString::fromStdString("Motherboard") + QString::fromStdString(": ") + ui->tableWidget->item(3,0)->text();
+    allInfo += "\t" + mbInfo + "\n";
+    allInfo += "Test scores: \n";
+    QString testScore = "";
+    for(int i = 0; i < ui->testScores->rowCount(); i++)
+    {
+        testScore = ui->testScores->item(i,0)->text() + ": " + ui->testScores->item(i,1)->text();
+        allInfo += "\t" + testScore + "\n";
+    }
+    (*bufLen) = allInfo.length()+1;
+    (*buf) = new char[(*bufLen)];
+    memcpy((*buf),allInfo.toStdString().c_str(),(*bufLen));
+
+    return ret;
 }

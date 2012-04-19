@@ -1,5 +1,6 @@
 #include "submitdialog.h"
 #include "ui_submitdialog.h"
+#include <QMessageBox>
 
 SubmitDialog::SubmitDialog(QWidget *parent) :
     QDialog(parent),
@@ -21,6 +22,15 @@ void SubmitDialog::on_cancelSubmitButton_clicked()
 
 void SubmitDialog::on_confirmSubmitButton_clicked()
 {
-    emit confirmed();
-    this->close();
+    QString mes = "Information about your hardware and";
+    mes += "\nbenchmark results will be uploaded to server.";
+    mes += "\n\nContinue to send?";
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this, "Confirm submit", mes,
+                                        QMessageBox::Yes | QMessageBox::No);
+    if (reply == QMessageBox::Yes)
+    {
+        emit confirmed();
+        this->close();
+    }
 }
